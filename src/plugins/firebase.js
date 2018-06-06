@@ -12,11 +12,11 @@ export const app = firebase.initializeApp({
   projectId: 'todovue-c895e'
 })
 
-// const ref = firebase.firestore()
-// const settings = {
-//   timestampsInSnapshots: true
-// }
-export const db = firebase.firestore()
+const ref = firebase.firestore()
+const settings = {
+  timestampsInSnapshots: true
+}
+export const db = ref.settings(settings)
 
 // export const db = firebase.firestore()
 export const usersCollection = firebase.firestore().collection('users')

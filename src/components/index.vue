@@ -5,7 +5,7 @@
   <input type="button" @click="addTarea()" value="AAA">
   <input type="button" @click="callFirebase()" value="FIREBASE">
   <ul>
-    <li :class="{'done--block': tarea.done}" @click="deleteTarea(tarea, index)" v-for="(tarea,index) in todos" :key="index">{{index+1}}-{{tarea.text}}<span v-if="tarea.done"> HECHO</span></li>
+    <li :class="{'done--block': tarea.done}" @click="deleteTarea(tarea, index)" v-for="(tarea,index) in tareas" :key="index">{{index+1}}-{{tarea.text}}<span v-if="tarea.done"> HECHO</span></li>
   </ul>
   {{todos}}
   {{tareas}}

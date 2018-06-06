@@ -5,13 +5,20 @@ import App from './App'
 import router from './router'
 import './plugins/firebase'
 import firebase from 'firebase/app'
-
+import { store } from './store'
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
-  components: { App },
-  template: '<App/>'
+  store,
+  render: h => h(App),
+  created () {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.$store.dispatch('autoSignIn', user)
+      }
+    })
+  }
 })
