@@ -5,22 +5,19 @@
   <input type="button" @click="addTarea()" value="AAA">
   <input type="button" @click="callFirebase()" value="FIREBASE">
   <ul>
-    <li :class="{'done--block': tarea.done}" @click="deleteTarea(tarea, index)" v-for="(tarea,index) in tareas" :key="index">{{index+1}}-{{tarea.text}}<span v-if="tarea.done"> HECHO</span></li>
+    <li :class="{'done--block': tarea.done}" @click="deleteTarea(tarea, index)" v-for="(tarea,index) in todoList" :key="index">{{index+1}}-{{tarea.text}}<span v-if="tarea.done"> HECHO</span></li>
   </ul>
-  {{todos}}
-  {{tareas}}
 </div>
 </template>
 
 <script>
-import {db} from '../plugins/firebase'
+import {mapGetters} from 'vuex'
+import {db} from '@/plugins/firebase'
 export default {
   data() {
     return {
       accion: '',
       tareas: [
-        {text: 'Aprender Vue', done: false},
-        {text: 'Aprender ES6', done: true}
       ],
       place: 'AÑADE',
       todos: {}
@@ -35,7 +32,7 @@ export default {
       this.accion = ''
     },
     deleteTarea(t,i) {
-        this.tareas[i].done = true;
+        this.tareasList[i].done = true;
       setTimeout(() => {
         this.tareas.splice(i, 1)
       }, 1000)
@@ -61,13 +58,16 @@ export default {
     }
     */
   },
-    /*
     firestore() {
       return {
-        todos: db.collection('todo'),
+        // todos: db.collection('users').doc(user.id).collection('todo')
       }
+    },
+    computed: {
+      ...mapGetters(['user', 'todoList'])
+    },
+    mounted() {
     }
-    */
 }
 </script>
 

@@ -12,7 +12,8 @@ export const store = new Vuex.Store({
       name: null,
       profile: null
     },
-    loading: false
+    loading: false,
+    todoList: []
   },
   mutations: {
     setUser (state, payload) {
@@ -20,9 +21,21 @@ export const store = new Vuex.Store({
     },
     setLoading (state, payload) {
       state.loading = payload
+    },
+    setTodoList (state, payload) {
+      state.todoList.push(payload)
     }
   },
   actions: {
+    getTodoList ({commit}, payload) {
+      db.collection('users').doc(payload.uid).collection('todo').get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          console.log(doc.data())
+          let todoInfo = doc.data()
+          commit('setTodoList', todoInfo)
+        })
+      })
+    },
     signUserUp ({commit}, payload) {
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then(
@@ -57,7 +70,6 @@ export const store = new Vuex.Store({
           })
     },
     autoSignIn ({commit}, payload) {
-
       db.collection('users').doc(payload.uid).get()
         .then((userdata) => {
           let userInfo = userdata.data()
@@ -69,6 +81,7 @@ export const store = new Vuex.Store({
           }
           commit('setUser', newUser)
         })
+        this.dispatch('getTodoList', payload)
     },
     logout ({commit}) {
       firebase.auth().signOut()
@@ -86,5 +99,8 @@ export const store = new Vuex.Store({
     loading (state) {
       return state.loading
     },
+    todoList (state) {
+      return state.todoList
+    }
   }
 })
